@@ -1,0 +1,29 @@
+
+# Initialize data structures
+month = "JANUARY"
+data = []
+
+# Split the raw data into lines and process each line
+for line in raw_data.split('\n'):
+    if line.strip():  # Ignore empty lines
+        parts = line.split()
+        if parts[0].isdigit():  # New date entry
+            date = f"{month} {parts.pop(0)}"
+        else:  # Same date as previous
+            date = current_date
+        
+        # Process the remaining parts of the line
+        album = " ".join(parts[:-2])
+        artist = parts[-2]
+        notes = parts[-1]
+        
+        data.append([date, album, artist, notes])
+        current_date = date  # Update the current date
+
+# Write the data to a CSV file
+with open('albums.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(["Date", "Album", "Artist", "Notes"])  # Write header
+    writer.writerows(data)  # Write data rows
+
+print("CSV file created successfully!")
